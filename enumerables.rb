@@ -267,19 +267,25 @@ module Enumerable
   end
 
 #7.- ---- my_count ----
-  def my_count
-    counter = 0
+  def my_count(*arg)
+    count = 0
 
     if block_given?
       self.my_each do |elmt|
         if yield(elmt)
-          counter += 1
+          count += 1
         end
       end
+    elsif arg.empty?
+      count = self.size
     else
-      counter = self.size
+      self.my_each do |elmt|
+        if elmt == arg[0]
+          count += 1
+        end
+      end
     end
-    counter
+    count
   end
 
 #8.- ---- my_map ----
@@ -299,4 +305,21 @@ module Enumerable
     new_arr
   end
 
+#9.- ---- my_inject Method ----
+  def my_inject(*args)
+
+    if !args.empty? && !block_given?
+      if args[0].class == Numeric && args[1].class == Symbol
+
+      elsif args[0].class == Symbol
+      end
+
+    elsif args[0].class == Numeric && block_given?
+
+    elsif args.empty? && block_given?
+      memo = self[0]
+      self.my_each {|val| memo = yield(memo, val)}
+    end
+    memo
+  end
 end
