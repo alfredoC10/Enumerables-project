@@ -193,4 +193,77 @@ module Enumerable
 
   end
 
+  #6.- ---- my_none? method ----
+  def my_none?(*arg)
+    counter = 0
+    # Was a block given to the method?
+    if block_given?
+      self.my_each do |elmt| 
+        if yield(elmt) == true
+          counter += 1 
+        end
+      end
+      if counter == 0 
+        true
+      else
+        false
+      end
+    # If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
+    elsif arg[0].instance_of? Class 
+      self.my_each do |elmt|
+        if elmt.class == arg[0]
+          counter += 1
+        end
+      end
+      if counter == 0 
+        true
+      else
+        false
+      end
+    # Here my_none? will find if a specific thing isn't within the collection
+    elsif arg[0].is_a? Object
+
+      if arg[0].class == Regexp #Do none of the elements match the regular expression?
+        self.my_each do |elmt|
+          if elmt.class != String
+            false
+          elsif elmt.match?(arg[0])
+            counter += 1
+          end
+        end
+        if counter == 0
+          true
+        else
+          false
+        end
+      #Not there a block or an argument?
+      elsif arg.size == 0
+        self.my_each do |elmt|
+          if elmt != false && elmt != nil
+            counter +=1
+          end
+        end
+        if counter == 0
+          true
+        else
+          false
+        end
+      # Here my_none? is going to check that a specific object isn't inside the collection
+      else
+        self.my_each do |elmt|
+          if elmt == arg[0]
+            counter += 1
+          end
+        end
+        if counter == 0 
+          true
+        else
+          false
+        end
+      end
+
+    end
+
+  end
+
 end
