@@ -266,4 +266,21 @@ module Enumerable
 
   end
 
+#8.- ---- my_map ----
+  def my_map
+    return to_enum unless block_given?
+    new_arr = []
+
+    if self.class == Array or self.class == Range
+      my_each do |i|
+        new_arr.push(yield(i))
+      end
+    else
+      my_each do |key, value|
+        new_arr.push(yield(key, value))
+      end
+    end
+    new_arr
+  end
+
 end
