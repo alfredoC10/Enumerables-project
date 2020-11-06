@@ -266,6 +266,22 @@ module Enumerable
 
   end
 
+#7.- ---- my_count ----
+  def my_count
+    counter = 0
+
+    if block_given?
+      self.my_each do |elmt|
+        if yield(elmt)
+          counter += 1
+        end
+      end
+    else
+      counter = self.size
+    end
+    counter
+  end
+
 #8.- ---- my_map ----
   def my_map
     return to_enum unless block_given?
