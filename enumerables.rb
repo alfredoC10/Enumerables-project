@@ -47,25 +47,66 @@ module Enumerable
     end
   end
 
+
 #4.- ---- my_all? method ----
-  def my_all?(*arg)
-    counter = 0
-    # Was a block given to the method?
-    if block_given?
-      self.my_each do |elmt| 
-        if yield(elmt) == true
-          counter += 1 
+def my_all?(*arg)
+  counter = 0
+  # Was a block given to the method?
+  if block_given?
+    self.my_each do |elmt| 
+      if yield(elmt) == true
+        counter += 1 
+      end
+    end
+    if counter == self.to_a.length 
+      true
+    else
+      false
+    end
+  # If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
+  elsif arg[0].is_a? Class 
+    self.my_each do |elmt|
+      if elmt.class == arg[0] or elmt.is_a? arg[0]
+        counter += 1
+      end
+    end
+    if counter == self.to_a.length 
+      true
+    else
+      false
+    end
+  # Is my_all? used to find if the collection is made of a specific thing?
+  elsif arg[0].is_a? Object
+
+    if arg[0].class == Regexp #Do all of the elements match the regular expression?
+      self.my_each do |elmt|
+        if elmt.class != String
+          false
+        elsif elmt.match?(arg[0])
+          counter += 1
         end
       end
-      if counter == self.to_a.length 
+      if counter == self.to_a.length
         true
       else
         false
       end
-    # If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
-    elsif arg[0].instance_of? Class 
+    #Not there a block or an argument?
+    elsif arg.size == 0
       self.my_each do |elmt|
-        if elmt.class == arg[0]
+        if elmt != false && elmt != nil
+          counter +=1
+        end
+      end
+      if counter == self.to_a.length
+        true
+      else
+        false
+      end
+    #My_all? will be used to find out if the collection is made of a specific object
+    else
+      self.my_each do |elmt|
+        if elmt == arg[0]
           counter += 1
         end
       end
@@ -74,51 +115,12 @@ module Enumerable
       else
         false
       end
-    # Is my_all? used to find if the collection is made of a specific thing?
-    elsif arg[0].is_a? Object
-
-      if arg[0].class == Regexp #Do all of the elements match the regular expression?
-        self.my_each do |elmt|
-          if elmt.class != String
-            false
-          elsif elmt.match?(arg[0])
-            counter += 1
-          end
-        end
-        if counter == self.to_a.length
-          true
-        else
-          false
-        end
-      #Not there a block or an argument?
-      elsif arg.size == 0
-        self.my_each do |elmt|
-          if elmt != false && elmt != nil
-            counter +=1
-          end
-        end
-        if counter == self.to_a.length
-          true
-        else
-          false
-        end
-      #My_all? will be used to find out if the collection is made of a specific object
-      else
-        self.my_each do |elmt|
-          if elmt == arg[0]
-            counter += 1
-          end
-        end
-        if counter == self.to_a.length 
-          true
-        else
-          false
-        end
-      end
-
     end
 
   end
+
+end
+
 
 #5.- ---- my_any? method ----
   def my_any?(*arg)
@@ -138,7 +140,7 @@ module Enumerable
     # If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
     elsif arg[0].instance_of? Class 
       self.my_each do |elmt|
-        if elmt.class == arg[0]
+        if elmt.class == arg[0] or elmt.is_a? arg[0]
           counter += 1
         end
       end
@@ -211,7 +213,7 @@ module Enumerable
     # If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
     elsif arg[0].instance_of? Class 
       self.my_each do |elmt|
-        if elmt.class == arg[0]
+        if elmt.class == arg[0] or elmt.is_a? arg[0]
           counter += 1
         end
       end
@@ -306,20 +308,63 @@ module Enumerable
   end
 
 #9.- ---- my_inject Method ----
-  def my_inject(*args)
+  def my_inject(*args) #Variable arguments or parameters
+    memo = self.to_a[0]
 
-    if !args.empty? && !block_given?
-      if args[0].class == Numeric && args[1].class == Symbol
 
-      elsif args[0].class == Symbol
+#Case 1: arguments are given but not a block
+    if !args.empty? && !block_given? 
+      if (args[0].is_a? Numeric or args[0].class == String) && args[1].class == Symbol #There are an initial value and a symbol which indicates the operation to perform  
+        memo = args[0]
+        if args[1] == :+
+          self.my_each {|elmt| memo = memo + elmt}
+        elsif args[1] == :-
+          self.my_each {|elmt| memo = memo - elmt}
+        elsif args[1] == :*
+          self.my_each {|elmt| memo = memo * elmt}
+        elsif args[1] == :/
+          self.my_each {|elmt| memo = memo / elmt}
+        elsif args[1] == :**
+          self.my_each {|elmt| memo = memo ** elmt}
+        elsif args[1] == :%
+          self.my_each {|elmt| memo = memo % elmt}
+        end
+
+      elsif args.size == 1 && args[0].class == Symbol #There's only the operation's symbol
+        if args[0] == :+
+          self[1..-1].my_each {|elmt| memo = memo + elmt}
+        elsif args[0] == :-
+          self[1..-1].my_each {|elmt| memo = memo - elmt}
+        elsif args[0] == :*
+          self[1..-1].my_each {|elmt| memo = memo * elmt}
+        elsif args[0] == :/
+          self[1..-1].my_each {|elmt| memo = memo / elmt}
+        elsif args[0] == :**
+          self[1..-1].my_each {|elmt| memo = memo ** elmt}
+        elsif args[0] == :%
+          self[1..-1].my_each {|elmt| memo = memo % elmt}
+        end 
+
       end
 
-    elsif args[0].class == Numeric && block_given?
+#Case 2: an initial value is given as an argument along with a block
+    elsif (args[0].is_a? Numeric or args[0].class == String) && block_given?
+      memo = args[0]
+      self.my_each {|elmt| memo = yield(memo, elmt)}
 
+#Case 3: only a block is given 
     elsif args.empty? && block_given?
-      memo = self[0]
-      self.my_each {|val| memo = yield(memo, val)}
+      self[1..-1].my_each {|elmt| memo = yield(memo, elmt)}
     end
+
     memo
+
   end
+
 end
+
+#10.- ---- Method created for testin my_inject method ----
+def multiply_els(array)
+  array.my_inject(:*)
+end
+
