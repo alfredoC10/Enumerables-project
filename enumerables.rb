@@ -48,7 +48,7 @@ module Enumerable
   end
 
 
-#4.- ---- my_all? method ----
+#4.- ---- my_all? Method ----
 def my_all?(*arg)
   counter = 0
   # Was a block given to the method?
@@ -122,7 +122,7 @@ def my_all?(*arg)
 end
 
 
-#5.- ---- my_any? method ----
+#5.- ---- my_any? Method ----
   def my_any?(*arg)
     counter = 0
   # Was a block given to the method?
@@ -195,7 +195,7 @@ end
 
   end
 
-  #6.- ---- my_none? method ----
+  #6.- ---- my_none? Method ----
   def my_none?(*arg)
     counter = 0
     # Was a block given to the method?
@@ -268,7 +268,7 @@ end
 
   end
 
-#7.- ---- my_count ----
+#7.- ---- my_count Method ----
   def my_count(*arg)
     count = 0
 
@@ -290,9 +290,9 @@ end
     count
   end
 
-#8.- ---- my_map ----
+#8.- ---- my_map Method ----
   def my_map
-    return to_enum unless block_given?
+    return to_enum(:my_map) unless block_given?
     new_arr = []
 
     if self.class == Array or self.class == Range
@@ -367,4 +367,40 @@ end
 def multiply_els(array)
   array.my_inject(:*)
 end
+
+#11.- ---- Modified my_map method that takes proc ----
+
+def my_map(&my_map_proc)
+  new_arr = []
+
+  if self.class == Array or self.class == Range
+    my_each do |i|
+      new_arr.push(my_map_proc.call(i))
+    end
+  else
+    my_each do |key, value|
+      new_arr.push(my_map_proc.call(key, value))
+    end
+  end
+  new_arr
+end
+
+#11.- ---- Modified my_map method that takes proc ----
+
+  def my_map(&my_map_proc)
+    new_arr = []
+
+    if self.class == Array or self.class == Range
+      my_each do |i|
+        new_arr.push(my_map_proc.call(i))
+      end
+    else
+      my_each do |key, value|
+        new_arr.push(my_map_proc.call(key, value))
+      end
+    end
+    new_arr
+  end
+end
+
 
