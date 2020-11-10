@@ -1,5 +1,5 @@
 # Enumerable-methods-project
-In this project the most common Ruby enumerable methods were rebuilded using other methods. It's objective is   to get users closer to the comprehention of their functionality and to enhance the learning on how to program in Ruby by knowing where and when to use the different Ruby tools.  
+In this project the most common Ruby enumerable methods were rebuilded using other methods. It's goal is  to get users closer to the comprehention of their functionality and to enhance the learning on how to program in Ruby by knowing where and when to use the different Ruby tools.  
 
 The following are the enumerables methods included in this file:
 - each
