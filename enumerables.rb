@@ -144,13 +144,11 @@ module Enumerable
     #  Was a block given to the method?
     if block_given?
       my_each do |elmt|
-        if yield(elmt) == true
-          counter += 1 
-        end
+        counter += 1 if yield(elmt) == true
       end
     #  If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
-    elsif arg[0].instance_of? Class 
-      self.my_each do |elmt|
+    elsif arg[0].instance_of? Class
+      my_each do |elmt|
         if elmt.class == arg[0] or elmt.is_a? arg[0]
           counter += 1
         end
@@ -159,7 +157,7 @@ module Enumerable
     elsif arg[0].is_a? Object
 
       if arg[0].class == Regexp # Do none of the elements match the regular expression?
-        self.my_each do |elmt|
+        my_each do |elmt|
           if elmt.class != String
             false
           elsif elmt.match?(arg[0])
@@ -168,14 +166,14 @@ module Enumerable
         end
       # Not there a block or an argument?
       elsif arg.size == 0
-        self.my_each do |elmt|
+        my_each do |elmt|
           if elmt != false && elmt != nil
             counter +=1
           end
         end
       #  Here my_none? is going to check that a specific object isn't inside the collection
       else
-        self.my_each do |elmt|
+        my_each do |elmt|
           if elmt == arg[0]
             counter += 1
           end
@@ -194,7 +192,7 @@ module Enumerable
     count = 0
 
     if block_given?
-      self.my_each do |elmt|
+      my_each do |elmt|
         if yield(elmt)
           count += 1
         end
@@ -202,7 +200,7 @@ module Enumerable
     elsif arg.empty?
       count = self.size
     else
-      self.my_each do |elmt|
+      my_each do |elmt|
         if elmt == arg[0]
           count += 1
         end
