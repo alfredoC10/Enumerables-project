@@ -98,22 +98,18 @@ module Enumerable
 
   def my_any?(*arg)
     counter = 0
-  #  Was a block given to the method?
+    # Was a block given to the method?
     if block_given?
-      self.my_each do |elmt| 
-        if yield(elmt) == true
-          counter += 1 
-        end
+      my_each do |elmt|
+        counter += 1 if yield(elmt) == true
       end
 
     #  If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
-    elsif arg[0].instance_of? Class 
-      self.my_each do |elmt|
-        if elmt.class == arg[0] or elmt.is_a? arg[0]
-          counter += 1
-        end
+    elsif arg[0].instance_of? Class
+      my_each do |elmt|
+        counter += 1 if elmt.class == arg[0] or elmt.is_a? arg[0]
       end
-    #  Is my_any? used to find if there's a specific thing within the collection? 
+    #  Is my_any? used to find if there's a specific thing within the collection?
     elsif arg[0].is_a? Object
 
       if arg[0].class == Regexp # Does any of the elements match the regular expression?
@@ -125,30 +121,22 @@ module Enumerable
           end
         end
       # Not there a block or an argument?
-      elsif arg.size == 0
-        self.my_each do |elmt|
-          if elmt != false && elmt != nil
-            counter +=1
-          end
+      elsif arg.empty?
+        my_each do |elmt|
+          counter += 1 if elmt != false && !elmt.nil?
         end
       # My_any? will be used to look for a specific object within the collection
       else
-        self.my_each do |elmt|
-          if elmt == arg[0]
-            counter += 1
-          end
+        my_each do |elmt|
+          counter += 1 if elmt == arg[0]
         end
       end
     end
-
-    if counter > 0 
-      true
-    else
-      false
-    end
-
+    counter.positive?
   end
+end
 
+module Enumerable
   # 6.- ---- my_none? Method ----
 
   def my_none?(*arg)
