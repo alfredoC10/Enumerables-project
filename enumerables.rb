@@ -1,19 +1,23 @@
 module Enumerable
-#1.- ---- my_each Method ----
+  # 1.- ---- my_each Method ----
+
   def my_each
+
     return to_enum(:my_each) unless block_given?
-    arr = self.to_a
-    (arr.length).times do |indx|
+    arr = .to_a
+    arr.length.times do |indx|
       yield(arr[indx])
     end
     self
   end
 
+  # 2.- ---- my_each_with_index Method ----
 
-#2.- ---- my_each_with_index Method ----
   def my_each_with_index
+
     return to_enum(:my_each_with_index) unless block_given?
-    target_arr = self.to_a
+
+    target_arr = .to_a
     top = target_arr.length
     0.upto(top - 1) do |i|
       yield(target_arr[i], i)
@@ -21,10 +25,12 @@ module Enumerable
     self
   end
 
+  # 3.- ---- my_select Method ----
 
-#3.- ---- my_select Method ----
   def my_select
+
     return to_enum(:my_select) unless block_given?
+
     if self.is_a? Hash
       new_hsh = {}
       self.my_each do |key, value| 
@@ -46,11 +52,15 @@ module Enumerable
     end
   end
 
+end
 
-#4.- ---- my_all? Method ----
+module Enumerable
+  # 4.- ---- my_all? Method ----
+
   def my_all?(*arg)
+
     counter = 0
-    # Was a block given to the method?
+    #  Was a block given to the method?
     if block_given?
       self.my_each do |elmt| 
         if yield(elmt) == true
@@ -62,7 +72,7 @@ module Enumerable
       else
         false
       end
-    # If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
+    #  If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
     elsif arg[0].is_a? Class 
       self.my_each do |elmt|
         if elmt.class == arg[0] or elmt.is_a? arg[0]
@@ -74,10 +84,10 @@ module Enumerable
       else
         false
       end
-    # Is my_all? used to find if the collection is made of a specific thing?
+    #  Is my_all? used to find if the collection is made of a specific thing?
     elsif arg[0].is_a? Object
   
-      if arg[0].class == Regexp #Do all of the elements match the regular expression?
+      if arg[0].class == Regexp # Do all of the elements match the regular expression?
         self.my_each do |elmt|
           if elmt.class != String
             false
@@ -90,7 +100,7 @@ module Enumerable
         else
           false
         end
-      #Not there a block or an argument?
+      # Not there a block or an argument?
       elsif arg.size == 0
         self.my_each do |elmt|
           if elmt != false && elmt != nil
@@ -102,7 +112,7 @@ module Enumerable
         else
           false
         end
-      #My_all? will be used to find out if the collection is made of a specific object
+      # My_all? will be used to find out if the collection is made of a specific object
       else
         self.my_each do |elmt|
           if elmt == arg[0]
@@ -120,11 +130,12 @@ module Enumerable
   
   end
 
+  # 5.- ---- my_any? Method ----
 
-#5.- ---- my_any? Method ----
   def my_any?(*arg)
+
     counter = 0
-  # Was a block given to the method?
+  #  Was a block given to the method?
     if block_given?
       self.my_each do |elmt| 
         if yield(elmt) == true
@@ -136,7 +147,7 @@ module Enumerable
       else
         false
       end
-    # If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
+    #  If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
     elsif arg[0].instance_of? Class 
       self.my_each do |elmt|
         if elmt.class == arg[0] or elmt.is_a? arg[0]
@@ -148,10 +159,10 @@ module Enumerable
       else
         false
       end
-    # Is my_any? used to find if there's a specific thing within the collection? 
+    #  Is my_any? used to find if there's a specific thing within the collection? 
     elsif arg[0].is_a? Object
 
-      if arg[0].class == Regexp #Does any of the elements match the regular expression?
+      if arg[0].class == Regexp # Does any of the elements match the regular expression?
         self.my_each do |elmt|
           if elmt.class != String
             false
@@ -164,7 +175,7 @@ module Enumerable
         else
           false
         end
-      #Not there a block or an argument?
+      # Not there a block or an argument?
       elsif arg.size == 0
         self.my_each do |elmt|
           if elmt != false && elmt != nil
@@ -176,7 +187,7 @@ module Enumerable
         else
           false
         end
-      #My_any? will be used to look for a specific object within the collection
+      # My_any? will be used to look for a specific object within the collection
       else
         self.my_each do |elmt|
           if elmt == arg[0]
@@ -194,10 +205,15 @@ module Enumerable
 
   end
 
-  #6.- ---- my_none? Method ----
+end
+
+module Enumerable
+  # 6.- ---- my_none? Method ----
+
   def my_none?(*arg)
+
     counter = 0
-    # Was a block given to the method?
+    #  Was a block given to the method?
     if block_given?
       self.my_each do |elmt| 
         if yield(elmt) == true
@@ -209,7 +225,7 @@ module Enumerable
       else
         false
       end
-    # If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
+    #  If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
     elsif arg[0].instance_of? Class 
       self.my_each do |elmt|
         if elmt.class == arg[0] or elmt.is_a? arg[0]
@@ -221,10 +237,10 @@ module Enumerable
       else
         false
       end
-    # Here my_none? will find if a specific thing isn't within the collection
+    #  Here my_none? will find if a specific thing isn't within the collection
     elsif arg[0].is_a? Object
 
-      if arg[0].class == Regexp #Do none of the elements match the regular expression?
+      if arg[0].class == Regexp # Do none of the elements match the regular expression?
         self.my_each do |elmt|
           if elmt.class != String
             false
@@ -237,7 +253,7 @@ module Enumerable
         else
           false
         end
-      #Not there a block or an argument?
+      # Not there a block or an argument?
       elsif arg.size == 0
         self.my_each do |elmt|
           if elmt != false && elmt != nil
@@ -249,7 +265,7 @@ module Enumerable
         else
           false
         end
-      # Here my_none? is going to check that a specific object isn't inside the collection
+      #  Here my_none? is going to check that a specific object isn't inside the collection
       else
         self.my_each do |elmt|
           if elmt == arg[0]
@@ -267,8 +283,10 @@ module Enumerable
 
   end
 
-#7.- ---- my_count Method ----
+  # 7.- ---- my_count Method ----
+
   def my_count(*arg)
+
     count = 0
 
     if block_given?
@@ -289,8 +307,10 @@ module Enumerable
     count
   end
 
-#8.- ---- my_map Method ----
+  # 8.- ---- my_map Method ----
+
   def my_map
+
     return to_enum(:my_map) unless block_given?
     new_arr = []
   
@@ -302,13 +322,18 @@ module Enumerable
     new_arr
   end
 
-#9.- ---- my_inject Method ----
-  def my_inject(*args) #Variable arguments or parameters
+end
+
+module Enumerable
+  # 9.- ---- my_inject Method ----
+
+  def my_inject(*args) # Variable arguments or parameters
+
     memo = self.to_a[0]
 
-#Case 1: arguments are given but not a block
+  # Case 1: arguments are given but not a block
     if !args.empty? && !block_given? 
-      if (args[0].is_a? Numeric or args[0].class == String) && args[1].class == Symbol #There are an initial value and a symbol which indicates the operation to perform  
+      if (args[0].is_a? Numeric or args[0].class == String) && args[1].class == Symbol # There are an initial value and a symbol which indicates the operation to perform  
         memo = args[0]
         if args[1] == :+
           self.my_each {|elmt| memo = memo + elmt}
@@ -324,7 +349,7 @@ module Enumerable
           self.my_each {|elmt| memo = memo % elmt}
         end
 
-      elsif args.size == 1 && args[0].class == Symbol #There's only the operation's symbol
+      elsif args.size == 1 && args[0].class == Symbol # There's only the operation's symbol
         if args[0] == :+
           self[1..-1].my_each {|elmt| memo = memo + elmt}
         elsif args[0] == :-
@@ -341,12 +366,12 @@ module Enumerable
 
       end
 
-#Case 2: an initial value is given as an argument along with a block
+  # Case 2: an initial value is given as an argument along with a block
     elsif (args[0].is_a? Numeric or args[0].class == String) && block_given?
       memo = args[0]
       self.my_each {|elmt| memo = yield(memo, elmt)}
 
-#Case 3: only a block is given 
+  # Case 3: only a block is given 
     elsif args.empty? && block_given?
       self[1..-1].my_each {|elmt| memo = yield(memo, elmt)}
     end
@@ -355,13 +380,17 @@ module Enumerable
 
   end
 
-#10.- ---- Method created for testing my_inject method ----
+  # 10.- ---- Method created for testing my_inject method ----
+
   def multiply_els(array)
+
     array.my_inject(:*)
   end
 
-#11.- ---- Modified my_map method that takes proc ----
+  # 11.- ---- Modified my_map method that takes proc ----
+
   def my_map(&my_proc)
+
     new_arr = []
 
     if self.class == Array or self.class == Range
@@ -376,12 +405,14 @@ module Enumerable
     new_arr
   end
 
-#12.- ---- Modified my_map method that takes proc or block ----
+  # 12.- ---- Modified my_map method that takes proc or block ----
+
   def my_map(*my_proc)
+
     return "Only a proc must given as argument" if my_proc.size > 1
     new_arr = []
 
-    if block_given? #Case 1: When the method takes a block
+    if block_given? # Case 1: When the method takes a block
       if self.class == Array or self.class == Range
         self.my_each do |elmt|
           new_arr.push(yield(elmt))
@@ -393,7 +424,7 @@ module Enumerable
       end
       new_arr
 
-    elsif my_proc[0].class == Proc  #Case 2: When the method takes a proc
+    elsif my_proc[0].class == Proc  # Case 2: When the method takes a proc
       if self.class == Array or self.class == Range
         self.my_each do |i|
           new_arr.push(my_proc[0].call(i))
@@ -405,7 +436,7 @@ module Enumerable
       end
       new_arr
 
-    elsif my_proc.empty? && !block_given? #Case 3: When there's no block or proc, the method returns enumerator
+    elsif my_proc.empty? && !block_given? # Case 3: When there's no block or proc, the method returns enumerator
       to_enum(:my_map)
     end
   end
