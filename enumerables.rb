@@ -2,8 +2,8 @@ module Enumerable
   # 1.- ---- my_each Method ----
 
   def my_each
-
     return to_enum(:my_each) unless block_given?
+
     arr = to_a
     arr.length.times do |indx|
       yield(arr[indx])
@@ -14,7 +14,6 @@ module Enumerable
   # 2.- ---- my_each_with_index Method ----
 
   def my_each_with_index
-
     return to_enum(:my_each_with_index) unless block_given?
 
     target_arr = to_a
@@ -28,44 +27,35 @@ module Enumerable
   # 3.- ---- my_select Method ----
 
   def my_select
-
     return to_enum(:my_select) unless block_given?
 
     if self.is_a? Hash
       new_hsh = {}
-      self.my_each do |key, value| 
-        if yield(key, value)
-          new_hsh[key] = value
-        end
+      my_each do |key, value|
+        new_hsh[key] = value if yield(key, value)
       end
       new_hsh
     elsif self.is_a? String
-      return "Wrong input"
+      'Wrong input'
     else
       new_arr = []
-      self.my_each do |elmt|
-        if yield(elmt)
-          filtered_arr.push(elmt)
-        end
+      my_each do |elmt|
+        filtered_arr.push(elmt) if yield(elmt)
       end
-      return new_arr
+      new_arr
     end
   end
-
 end
 
 module Enumerable
   # 4.- ---- my_all? Method ----
 
   def my_all?(*arg)
-
     counter = 0
     #  Was a block given to the method?
     if block_given?
-      self.my_each do |elmt| 
-        if yield(elmt) == true
-          counter += 1 
-        end
+      my_each do |elmt| 
+        counter += 1 if yield(elmt) == true
       end
       if counter == self.to_a.length 
         true
@@ -74,7 +64,7 @@ module Enumerable
       end
     #  If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
     elsif arg[0].is_a? Class 
-      self.my_each do |elmt|
+      my_each do |elmt|
         if elmt.class == arg[0] or elmt.is_a? arg[0]
           counter += 1
         end
@@ -129,6 +119,9 @@ module Enumerable
     end
   
   end
+end
+
+module Enumerable
 
   # 5.- ---- my_any? Method ----
 
@@ -205,9 +198,6 @@ module Enumerable
 
   end
 
-end
-
-module Enumerable
   # 6.- ---- my_none? Method ----
 
   def my_none?(*arg)
