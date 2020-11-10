@@ -4,7 +4,7 @@ module Enumerable
   def my_each
 
     return to_enum(:my_each) unless block_given?
-    arr = .to_a
+    arr = to_a
     arr.length.times do |indx|
       yield(arr[indx])
     end
@@ -17,7 +17,7 @@ module Enumerable
 
     return to_enum(:my_each_with_index) unless block_given?
 
-    target_arr = .to_a
+    target_arr = to_a
     top = target_arr.length
     0.upto(top - 1) do |i|
       yield(target_arr[i], i)
