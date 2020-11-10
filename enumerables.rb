@@ -57,23 +57,13 @@ module Enumerable
       my_each do |elmt| 
         counter += 1 if yield(elmt) == true
       end
-      if counter == self.to_a.length 
-        true
-      else
-        false
-      end
+
     #  If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
-    elsif arg[0].is_a? Class 
+    elsif arg[0].is_a? Class
       my_each do |elmt|
-        if elmt.class == arg[0] or elmt.is_a? arg[0]
-          counter += 1
-        end
+        counter += 1 if elmt.class == arg[0] or elmt.is_a? arg[0]
       end
-      if counter == self.to_a.length 
-        true
-      else
-        false
-      end
+
     #  Is my_all? used to find if the collection is made of a specific thing?
     elsif arg[0].is_a? Object
   
@@ -85,23 +75,15 @@ module Enumerable
             counter += 1
           end
         end
-        if counter == self.to_a.length
-          true
-        else
-          false
-        end
+
       # Not there a block or an argument?
       elsif arg.size == 0
-        self.my_each do |elmt|
+        my_each do |elmt|
           if elmt != false && elmt != nil
             counter +=1
           end
         end
-        if counter == self.to_a.length
-          true
-        else
-          false
-        end
+
       # My_all? will be used to find out if the collection is made of a specific object
       else
         self.my_each do |elmt|
@@ -109,15 +91,13 @@ module Enumerable
             counter += 1
           end
         end
-        if counter == self.to_a.length 
-          true
-        else
-          false
-        end
       end
-  
     end
-  
+    if counter == self.to_a.length
+      true
+    else
+      false
+    end
   end
 end
 
