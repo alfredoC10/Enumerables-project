@@ -90,10 +90,6 @@ module Enumerable
       end
     end
     counter == to_a.length
-      true
-    else
-      false
-    end
   end
 end
 
