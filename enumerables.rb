@@ -204,7 +204,7 @@ module Enumerable
     return to_enum(:my_map) unless block_given?
 
     new_arr = []
-  
+
     if self.class == Array or self.class == Range
       my_each { |i| new_arr.push(yield(i)) }
     elsif self.class == Hash
@@ -226,48 +226,47 @@ module Enumerable
       if (args[0].is_a? Numeric or args[0].class == String) && args[1].class == Symbol
         memo = args[0]
         if args[1] == :+
-          my_each { |elmt| memo = memo + elmt }
+          my_each { |elmt| memo += elmt }
         elsif args[1] == :-
-          my_each { |elmt| memo = memo - elmt }
+          my_each { |elmt| memo -= elmt }
         elsif args[1] == :*
-          my_each { |elmt| memo = memo * elmt }
+          my_each { |elmt| memo *= elmt }
         elsif args[1] == :/
-          my_each { |elmt| memo = memo / elmt }
+          my_each { |elmt| memo /= elmt }
         elsif args[1] == :**
-          my_each { |elmt| memo = memo ** elmt }
+          my_each { |elmt| memo **= elmt }
         elsif args[1] == :%
-          my_each { |elmt| memo = memo % elmt }
+          my_each { |elmt| memo %= elmt }
         end
 
       elsif args.size == 1 && args[0].class == Symbol # There's only the operation's symbol
         if args[0] == :+
-          self[1..-1].my_each { |elmt| memo = memo + elmt }
+          self[1..-1].my_each { |elmt| memo += elmt }
         elsif args[0] == :-
-          self[1..-1].my_each { |elmt| memo = memo - elmt }
+          self[1..-1].my_each { |elmt| memo -= elmt }
         elsif args[0] == :*
-          self[1..-1].my_each { |elmt| memo = memo * elmt }
+          self[1..-1].my_each { |elmt| memo *= elmt }
         elsif args[0] == :/
-          self[1..-1].my_each { |elmt| memo = memo / elmt }
+          self[1..-1].my_each { |elmt| memo /= elmt }
         elsif args[0] == :**
-          self[1..-1].my_each { |elmt| memo = memo ** elmt }
+          self[1..-1].my_each { |elmt| memo **= elmt }
         elsif args[0] == :%
-          self[1..-1].my_each { |elmt| memo = memo % elmt }
-        end 
+          self[1..-1].my_each { |elmt| memo %= elmt }
+        end
 
       end
 
-  # Case 2: an initial value is given as an argument along with a block
+      # Case 2: an initial value is given as an argument along with a block
     elsif (args[0].is_a? Numeric or args[0].class == String) && block_given?
       memo = args[0]
-      self.my_each {|elmt| memo = yield(memo, elmt)}
+      my_each { |elmt| memo = yield(memo, elmt) }
 
-  # Case 3: only a block is given 
+      # Case 3: only a block is given
     elsif args.empty? && block_given?
-      self[1..-1].my_each {|elmt| memo = yield(memo, elmt)}
+      self[1..-1].my_each { |elmt| memo = yield(memo, elmt) }
     end
 
     memo
-
   end
 
   # 10.- ---- Method created for testing my_inject method ----
@@ -279,16 +278,15 @@ module Enumerable
 
   # 11.- ---- Modified my_map method that takes proc ----
 
-  def my_map(&my_proc)
-
+  def my_map_proc(&my_proc)
     new_arr = []
 
     if self.class == Array or self.class == Range
-      self.my_each do |i|
+      my_each do |i|
         new_arr.push(my_proc.call(i))
       end
     elsif self.class == Hash
-      self.my_each do |key, value|
+      my_each do |key, value|
         new_arr.push(my_proc.call(key, value))
       end
     end
@@ -297,30 +295,30 @@ module Enumerable
 
   # 12.- ---- Modified my_map method that takes proc or block ----
 
-  def my_map(*my_proc)
-
-    return "Only a proc must given as argument" if my_proc.size > 1
+  def my_map_proc_block(*my_proc)
+    return 'Only a proc must given as argument' if my_proc.size > 1
     new_arr = []
 
     if block_given? # Case 1: When the method takes a block
+
       if self.class == Array or self.class == Range
-        self.my_each do |elmt|
+        my_each do |elmt|
           new_arr.push(yield(elmt))
         end
       elsif self.class == Hash
-        self.my_each do |key, value|
+        my_each do |key, value|
           new_arr.push(yield(key, value))
         end
       end
       new_arr
 
-    elsif my_proc[0].class == Proc  # Case 2: When the method takes a proc
+    elsif my_proc[0].class == Proc # Case 2: When the method takes a proc
       if self.class == Array or self.class == Range
-        self.my_each do |i|
+        my_each do |i|
           new_arr.push(my_proc[0].call(i))
         end
       elsif self.class == Hash
-        self.my_each do |key, value|
+        my_each do |key, value|
           new_arr.push(my_proc[0].call(key, value))
         end
       end
@@ -330,5 +328,4 @@ module Enumerable
       to_enum(:my_map)
     end
   end
-
 end
