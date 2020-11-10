@@ -1,4 +1,3 @@
-# rubocop:disable Style/CaseEquality
 module Enumerable
 #1.- ---- my_each Method ----
   def my_each
@@ -49,64 +48,24 @@ module Enumerable
 
 
 #4.- ---- my_all? Method ----
-def my_all?(*arg)
-  counter = 0
-  # Was a block given to the method?
-  if block_given?
-    self.my_each do |elmt| 
-      if yield(elmt) == true
-        counter += 1 
-      end
-    end
-    if counter == self.to_a.length 
-      true
-    else
-      false
-    end
-  # If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
-  elsif arg[0].is_a? Class 
-    self.my_each do |elmt|
-      if elmt.class == arg[0] or elmt.is_a? arg[0]
-        counter += 1
-      end
-    end
-    if counter == self.to_a.length 
-      true
-    else
-      false
-    end
-  # Is my_all? used to find if the collection is made of a specific thing?
-  elsif arg[0].is_a? Object
-
-    if arg[0].class == Regexp #Do all of the elements match the regular expression?
-      self.my_each do |elmt|
-        if elmt.class != String
-          false
-        elsif elmt.match?(arg[0])
-          counter += 1
+  def my_all?(*arg)
+    counter = 0
+    # Was a block given to the method?
+    if block_given?
+      self.my_each do |elmt| 
+        if yield(elmt) == true
+          counter += 1 
         end
       end
-      if counter == self.to_a.length
+      if counter == self.to_a.length 
         true
       else
         false
       end
-    #Not there a block or an argument?
-    elsif arg.size == 0
+    # If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
+    elsif arg[0].is_a? Class 
       self.my_each do |elmt|
-        if elmt != false && elmt != nil
-          counter +=1
-        end
-      end
-      if counter == self.to_a.length
-        true
-      else
-        false
-      end
-    #My_all? will be used to find out if the collection is made of a specific object
-    else
-      self.my_each do |elmt|
-        if elmt == arg[0]
+        if elmt.class == arg[0] or elmt.is_a? arg[0]
           counter += 1
         end
       end
@@ -115,11 +74,51 @@ def my_all?(*arg)
       else
         false
       end
+    # Is my_all? used to find if the collection is made of a specific thing?
+    elsif arg[0].is_a? Object
+  
+      if arg[0].class == Regexp #Do all of the elements match the regular expression?
+        self.my_each do |elmt|
+          if elmt.class != String
+            false
+          elsif elmt.match?(arg[0])
+            counter += 1
+          end
+        end
+        if counter == self.to_a.length
+          true
+        else
+          false
+        end
+      #Not there a block or an argument?
+      elsif arg.size == 0
+        self.my_each do |elmt|
+          if elmt != false && elmt != nil
+            counter +=1
+          end
+        end
+        if counter == self.to_a.length
+          true
+        else
+          false
+        end
+      #My_all? will be used to find out if the collection is made of a specific object
+      else
+        self.my_each do |elmt|
+          if elmt == arg[0]
+            counter += 1
+          end
+        end
+        if counter == self.to_a.length 
+          true
+        else
+          false
+        end
+      end
+  
     end
-
+  
   end
-
-end
 
 
 #5.- ---- my_any? Method ----
@@ -291,22 +290,21 @@ end
   end
 
 #8.- ---- my_map Method ----
-def my_map
-  return to_enum(:my_map) unless block_given?
-  new_arr = []
-
-  if self.class == Array or self.class == Range
-    self.my_each { |i| new_arr.push(yield(i)) }
-  elsif self.class == Hash
-    self.my_each {|key, value| new_arr.push(yield(key, value))}
+  def my_map
+    return to_enum(:my_map) unless block_given?
+    new_arr = []
+  
+    if self.class == Array or self.class == Range
+      self.my_each { |i| new_arr.push(yield(i)) }
+    elsif self.class == Hash
+      self.my_each {|key, value| new_arr.push(yield(key, value))}
+    end
+    new_arr
   end
-  new_arr
-end
 
 #9.- ---- my_inject Method ----
   def my_inject(*args) #Variable arguments or parameters
     memo = self.to_a[0]
-
 
 #Case 1: arguments are given but not a block
     if !args.empty? && !block_given? 
@@ -357,12 +355,10 @@ end
 
   end
 
-end
-
 #10.- ---- Method created for testing my_inject method ----
-def multiply_els(array)
-  array.my_inject(:*)
-end
+  def multiply_els(array)
+    array.my_inject(:*)
+  end
 
 #11.- ---- Modified my_map method that takes proc ----
   def my_map(&my_proc)
@@ -415,5 +411,3 @@ end
   end
 
 end
-
-
