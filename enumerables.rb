@@ -291,21 +291,17 @@ end
   end
 
 #8.- ---- my_map Method ----
-  def my_map
-    return to_enum(:my_map) unless block_given?
-    new_arr = []
+def my_map
+  return to_enum(:my_map) unless block_given?
+  new_arr = []
 
-    if self.class == Array or self.class == Range
-      my_each do |i|
-        new_arr.push(yield(i))
-      end
-    else
-      my_each do |key, value|
-        new_arr.push(yield(key, value))
-      end
-    end
-    new_arr
+  if self.class == Array or self.class == Range
+    self.my_each { |i| new_arr.push(yield(i)) }
+  elsif self.class == Hash
+    self.my_each {|key, value| new_arr.push(yield(key, value))}
   end
+  new_arr
+end
 
 #9.- ---- my_inject Method ----
   def my_inject(*args) #Variable arguments or parameters
@@ -363,44 +359,61 @@ end
 
 end
 
-#10.- ---- Method created for testin my_inject method ----
+#10.- ---- Method created for testing my_inject method ----
 def multiply_els(array)
   array.my_inject(:*)
 end
 
 #11.- ---- Modified my_map method that takes proc ----
-
-def my_map(&my_map_proc)
-  new_arr = []
-
-  if self.class == Array or self.class == Range
-    my_each do |i|
-      new_arr.push(my_map_proc.call(i))
-    end
-  else
-    my_each do |key, value|
-      new_arr.push(my_map_proc.call(key, value))
-    end
-  end
-  new_arr
-end
-
-#11.- ---- Modified my_map method that takes proc ----
-
-  def my_map(&my_map_proc)
+  def my_map(&my_proc)
     new_arr = []
 
     if self.class == Array or self.class == Range
-      my_each do |i|
-        new_arr.push(my_map_proc.call(i))
+      self.my_each do |i|
+        new_arr.push(my_proc.call(i))
       end
-    else
-      my_each do |key, value|
-        new_arr.push(my_map_proc.call(key, value))
+    elsif self.class == Hash
+      self.my_each do |key, value|
+        new_arr.push(my_proc.call(key, value))
       end
     end
     new_arr
   end
+
+#12.- ---- Modified my_map method that takes proc or block ----
+  def my_map(*my_proc)
+    return "Only a proc must given as argument" if my_proc.size > 1
+    new_arr = []
+
+    if block_given? #Case 1: When the method takes a block
+      if self.class == Array or self.class == Range
+        self.my_each do |elmt|
+          new_arr.push(yield(elmt))
+        end
+      elsif self.class == Hash
+        self.my_each do |key, value|
+          new_arr.push(yield(key, value))
+        end
+      end
+      new_arr
+
+    elsif my_proc[0].class == Proc  #Case 2: When the method takes a proc
+      if self.class == Array or self.class == Range
+        self.my_each do |i|
+          new_arr.push(my_proc[0].call(i))
+        end
+      elsif self.class == Hash
+        self.my_each do |key, value|
+          new_arr.push(my_proc[0].call(key, value))
+        end
+      end
+      new_arr
+
+    elsif my_proc.empty? && !block_given? #Case 3: When there's no block or proc, the method returns enumerator
+      to_enum(:my_map)
+    end
+  end
+
 end
 
 
