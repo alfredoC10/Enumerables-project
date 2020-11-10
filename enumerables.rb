@@ -113,7 +113,7 @@ module Enumerable
     elsif arg[0].is_a? Object
 
       if arg[0].class == Regexp # Does any of the elements match the regular expression?
-        self.my_each do |elmt|
+        my_each do |elmt|
           if elmt.class != String
             false
           elsif elmt.match?(arg[0])
@@ -140,19 +140,13 @@ module Enumerable
   # 6.- ---- my_none? Method ----
 
   def my_none?(*arg)
-
     counter = 0
     #  Was a block given to the method?
     if block_given?
-      self.my_each do |elmt| 
+      my_each do |elmt|
         if yield(elmt) == true
           counter += 1 
         end
-      end
-      if counter == 0 
-        true
-      else
-        false
       end
     #  If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
     elsif arg[0].instance_of? Class 
@@ -160,11 +154,6 @@ module Enumerable
         if elmt.class == arg[0] or elmt.is_a? arg[0]
           counter += 1
         end
-      end
-      if counter == 0 
-        true
-      else
-        false
       end
     #  Here my_none? will find if a specific thing isn't within the collection
     elsif arg[0].is_a? Object
@@ -177,22 +166,12 @@ module Enumerable
             counter += 1
           end
         end
-        if counter == 0
-          true
-        else
-          false
-        end
       # Not there a block or an argument?
       elsif arg.size == 0
         self.my_each do |elmt|
           if elmt != false && elmt != nil
             counter +=1
           end
-        end
-        if counter == 0
-          true
-        else
-          false
         end
       #  Here my_none? is going to check that a specific object isn't inside the collection
       else
@@ -201,15 +180,9 @@ module Enumerable
             counter += 1
           end
         end
-        if counter == 0 
-          true
-        else
-          false
-        end
       end
-
     end
-
+    counter == 0
   end
 end
 
