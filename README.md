@@ -13,7 +13,7 @@ The following are the enumerables methods included in this file:
 - inject
 - And 2 modifications of the map method
 
-![screenshot](https://github.com/Huemac-Alfredo/bubble-sort-project/blob/master/screen_shot.PNG)
+![screenshot](https://github.com/Huemac-Alfredo/Enumerables-project/blob/code/Screen.PNG)
 
 ## Built With
 - Repl.it
