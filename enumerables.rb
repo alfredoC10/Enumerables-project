@@ -149,9 +149,7 @@ module Enumerable
     #  If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
     elsif arg[0].instance_of? Class
       my_each do |elmt|
-        if elmt.class == arg[0] or elmt.is_a? arg[0]
-          counter += 1
-        end
+        counter += 1 if elmt.class == arg[0] or elmt.is_a? arg[0]
       end
     #  Here my_none? will find if a specific thing isn't within the collection
     elsif arg[0].is_a? Object
@@ -165,22 +163,18 @@ module Enumerable
           end
         end
       # Not there a block or an argument?
-      elsif arg.size == 0
+      elsif arg.empty?
         my_each do |elmt|
-          if elmt != false && elmt != nil
-            counter +=1
-          end
+          counter += 1 if elmt != false && !elmt.nil?
         end
       #  Here my_none? is going to check that a specific object isn't inside the collection
       else
         my_each do |elmt|
-          if elmt == arg[0]
-            counter += 1
-          end
+          counter += 1 if elmt == arg[0]
         end
       end
     end
-    counter == 0
+    counter.zero?
   end
 end
 
@@ -188,22 +182,17 @@ module Enumerable
   # 7.- ---- my_count Method ----
 
   def my_count(*arg)
-
     count = 0
 
     if block_given?
       my_each do |elmt|
-        if yield(elmt)
-          count += 1
-        end
+        count += 1 if yield(elmt)
       end
     elsif arg.empty?
-      count = self.size
+      count = size
     else
       my_each do |elmt|
-        if elmt == arg[0]
-          count += 1
-        end
+        count += 1 if elmt == arg[0]
       end
     end
     count
@@ -212,58 +201,57 @@ module Enumerable
   # 8.- ---- my_map Method ----
 
   def my_map
-
     return to_enum(:my_map) unless block_given?
+
     new_arr = []
   
     if self.class == Array or self.class == Range
-      self.my_each { |i| new_arr.push(yield(i)) }
+      my_each { |i| new_arr.push(yield(i)) }
     elsif self.class == Hash
-      self.my_each {|key, value| new_arr.push(yield(key, value))}
+      my_each { |key, value| new_arr.push(yield(key, value)) }
     end
     new_arr
   end
-
 end
 
 module Enumerable
   # 9.- ---- my_inject Method ----
 
-  def my_inject(*args) # Variable arguments or parameters
+  def my_inject(*args)
+    memo = to_a[0]
 
-    memo = self.to_a[0]
-
-  # Case 1: arguments are given but not a block
-    if !args.empty? && !block_given? 
-      if (args[0].is_a? Numeric or args[0].class == String) && args[1].class == Symbol # There are an initial value and a symbol which indicates the operation to perform  
+    # Case 1: arguments are given but not a block
+    if !args.empty? && !block_given?
+      # There are an initial value and a symbol which indicates the operation to perform
+      if (args[0].is_a? Numeric or args[0].class == String) && args[1].class == Symbol
         memo = args[0]
         if args[1] == :+
-          self.my_each {|elmt| memo = memo + elmt}
+          my_each { |elmt| memo = memo + elmt }
         elsif args[1] == :-
-          self.my_each {|elmt| memo = memo - elmt}
+          my_each { |elmt| memo = memo - elmt }
         elsif args[1] == :*
-          self.my_each {|elmt| memo = memo * elmt}
+          my_each { |elmt| memo = memo * elmt }
         elsif args[1] == :/
-          self.my_each {|elmt| memo = memo / elmt}
+          my_each { |elmt| memo = memo / elmt }
         elsif args[1] == :**
-          self.my_each {|elmt| memo = memo ** elmt}
+          my_each { |elmt| memo = memo ** elmt }
         elsif args[1] == :%
-          self.my_each {|elmt| memo = memo % elmt}
+          my_each { |elmt| memo = memo % elmt }
         end
 
       elsif args.size == 1 && args[0].class == Symbol # There's only the operation's symbol
         if args[0] == :+
-          self[1..-1].my_each {|elmt| memo = memo + elmt}
+          self[1..-1].my_each { |elmt| memo = memo + elmt }
         elsif args[0] == :-
-          self[1..-1].my_each {|elmt| memo = memo - elmt}
+          self[1..-1].my_each { |elmt| memo = memo - elmt }
         elsif args[0] == :*
-          self[1..-1].my_each {|elmt| memo = memo * elmt}
+          self[1..-1].my_each { |elmt| memo = memo * elmt }
         elsif args[0] == :/
-          self[1..-1].my_each {|elmt| memo = memo / elmt}
+          self[1..-1].my_each { |elmt| memo = memo / elmt }
         elsif args[0] == :**
-          self[1..-1].my_each {|elmt| memo = memo ** elmt}
+          self[1..-1].my_each { |elmt| memo = memo ** elmt }
         elsif args[0] == :%
-          self[1..-1].my_each {|elmt| memo = memo % elmt}
+          self[1..-1].my_each { |elmt| memo = memo % elmt }
         end 
 
       end
