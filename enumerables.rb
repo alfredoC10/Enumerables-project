@@ -76,9 +76,6 @@ module Enumerable
     end
     counter == to_a.length
   end
-end
-
-module Enumerable
   # 5.- ---- my_any? Method ----
 
   def my_any?(arg = nil)
