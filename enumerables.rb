@@ -153,6 +153,7 @@ module Enumerable
 
   # 8.- ---- my_map Method (modified to take a proc or block) ----
   def my_map(*my_proc)
+
     return 'Only one proc must given as argument' if my_proc.size > 1
     new_arr = []
 
@@ -166,6 +167,7 @@ module Enumerable
           new_arr.push(yield(key, value))
         end
       end
+      new_arr
 
     elsif my_proc[0].class == Proc or (my_proc[0].class == Proc && block_given?) # Case 2: When the method takes a proc
       if self.class == Array or self.class == Range
@@ -177,11 +179,11 @@ module Enumerable
           new_arr.push(my_proc[0].call(key, value))
         end
       end
-      
+      new_arr
+
     elsif my_proc.empty? && !block_given? # Case 3: When there's no block or proc, the method returns enumerator
       to_enum(:my_map)
     end
-    new_arr
   end
 
 
