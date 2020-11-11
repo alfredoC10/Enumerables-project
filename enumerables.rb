@@ -62,7 +62,7 @@ module Enumerable
 
     # Do all of the elements match the regular expression?
     elsif arg.class == Regexp
-      arr_str = map (to_s)
+      arr_str = map to_s
       arr_str.my_each { |elmt| counter += 1 if elmt.match?(arg) }
 
     # Not there a block or an argument?
