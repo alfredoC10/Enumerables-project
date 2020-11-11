@@ -1,5 +1,3 @@
-# rubocop:disable Style/CaseEquality
-# rubocop:enable Style/CaseEquality
 module Enumerable
   # 1.- ---- my_each Method ----
 
@@ -64,7 +62,7 @@ module Enumerable
 
     # Do all of the elements match the regular expression?
     elsif arg.class == Regexp
-      arr_str = map to_s
+      arr_str = map { |x| x.to_s }
       arr_str.my_each { |elmt| counter += 1 if elmt.match?(arg) }
 
     # Not there a block or an argument?
@@ -82,83 +80,60 @@ end
 module Enumerable
   # 5.- ---- my_any? Method ----
 
-  def my_any?(*arg)
+  def my_any?(arg = nil)
     counter = 0
-    # Was a block given to the method?
+
+    #  Was a block given to the method?
     if block_given?
-      my_each do |elmt|
-        counter += 1 if yield(elmt) == true
-      end
+      my_each { |elmt| counter += 1 if yield(elmt) == true }
 
     #  If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
-    elsif arg[0].instance_of? Class
-      my_each do |elmt|
-        counter += 1 if elmt.class == arg[0] or elmt.is_a? arg[0]
-      end
-    #  Is my_any? used to find if there's a specific thing within the collection?
-    elsif arg[0].is_a? Object
+    elsif arg.is_a? Class
+      my_each { |elmt| counter += 1 if elmt.class == arg or elmt.is_a? arg }
 
-      if arg[0].class == Regexp # Does any of the elements match the regular expression?
-        my_each do |elmt|
-          if elmt.class != String
-            false
-          elsif elmt.match?(arg[0])
-            counter += 1
-          end
-        end
-      # Not there a block or an argument?
-      elsif arg.empty?
-        my_each do |elmt|
-          counter += 1 if elmt != false && !elmt.nil?
-        end
-      # My_any? will be used to look for a specific object within the collection
-      else
-        my_each do |elmt|
-          counter += 1 if elmt == arg[0]
-        end
-      end
+    # Does any of the elements match the regular expression?
+    elsif arg.class == Regexp
+      arr_str = map { |x| x.to_s }
+      arr_str.my_each { |elmt| counter += 1 if elmt.match?(arg) }
+
+    # Not there a block or an argument?
+    elsif arg.nil?
+      my_each { |elmt| counter += 1 if elmt != false && !elmt.nil? }
+
+    # My_any? will be used to find out if the collection is made of a specific object
+    else
+      my_each { |elmt| counter += 1 if elmt == arg }
     end
     counter.positive?
   end
 end
 
 module Enumerable
-  # 6.- ---- my_none? Method ----
+  # 4.- ---- my_all? Method ----
 
-  def my_none?(*arg)
+  def my_all?(arg = nil)
     counter = 0
+
     #  Was a block given to the method?
     if block_given?
-      my_each do |elmt|
-        counter += 1 if yield(elmt) == true
-      end
-    #  If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
-    elsif arg[0].instance_of? Class
-      my_each do |elmt|
-        counter += 1 if elmt.class == arg[0] or elmt.is_a? arg[0]
-      end
-    #  Here my_none? will find if a specific thing isn't within the collection
-    elsif arg[0].is_a? Object
+      my_each { |elmt| counter += 1 if yield(elmt) == true }
 
-      if arg[0].class == Regexp # Do none of the elements match the regular expression?
-        my_each do |elmt|
-          if elmt.class != String
-            false
-          elsif elmt.match?(arg[0])
-            counter += 1
-          end
-        end
-      # Not there a block or an argument?
-      elsif arg.empty?
-        my_each do |elmt|
-          counter += 1 if elmt != false && !elmt.nil?
-        end
-      #  Here my_none? is going to check that a specific object isn't inside the collection
-      else
-        my_each do |elmt|
-          counter += 1 if elmt == arg[0]
-        end
-      end
+    #  If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
+    elsif arg.is_a? Class
+      my_each { |elmt| counter += 1 if elmt.class == arg or elmt.is_a? arg }
+
+    # Do none of the elements match the regular expression?
+    elsif arg.class == Regexp
+      arr_str = map { |x| x.to_s }
+      arr_str.my_each { |elmt| counter += 1 if elmt.match?(arg) }
+
+    # Not there a block or an argument?
+    elsif arg.nil?
+      my_each { |elmt| counter += 1 if elmt != false && !elmt.nil? }
+
+    # My_none? will be used to find out if the collection is not made of a specific object
+    else
+      my_each { |elmt| counter += 1 if elmt == arg }
     end
     counter.zero?
   end
