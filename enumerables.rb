@@ -46,9 +46,7 @@ module Enumerable
       new_arr
     end
   end
-end
 
-module Enumerable
   # 4.- ---- my_all? Method ----
 
   def my_all?(arg = nil)
@@ -104,9 +102,7 @@ module Enumerable
     end
     counter.positive?
   end
-end
 
-module Enumerable
   # 4.- ---- my_none? Method ----
 
   def my_none?(arg = nil)
@@ -135,9 +131,7 @@ module Enumerable
     end
     counter.zero?
   end
-end
 
-module Enumerable
   # 7.- ---- my_count Method ----
 
   def my_count(*arg)
@@ -171,9 +165,7 @@ module Enumerable
     end
     new_arr
   end
-end
 
-module Enumerable
   # 9.- ---- my_inject Method ----
 
   def my_inject(*args)
