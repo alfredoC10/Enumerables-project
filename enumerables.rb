@@ -62,13 +62,8 @@ module Enumerable
 
     # Do all of the elements match the regular expression?
     elsif arg.class == Regexp
-      my_each do |elmt|
-        if elmt.class != String
-          false
-        elsif elmt.match?(arg)
-          counter += 1
-        end
-      end
+      arr_str = map {|i| i.to_s}
+      arr_str.my_each { |elmt| counter += 1 if elmt.match?(arg) }
 
     # Not there a block or an argument?
     elsif arg.nil?
@@ -81,6 +76,7 @@ module Enumerable
     counter == to_a.length
   end
 end
+
 
 module Enumerable
   # 5.- ---- my_any? Method ----
