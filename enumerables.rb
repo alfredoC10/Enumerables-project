@@ -1,4 +1,4 @@
-# rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/AbcSize, Style/SymbolProc, Lint/MissingCopEnableDirective, Lint/RedundantCopDisableDirective
+# rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/AbcSize, Style/SymbolProc, Lint/MissingCopEnableDirective, Lint/RedundantCopDisableDirective, Metrics/ModuleLength
 module Enumerable
   # 1.- ---- my_each Method ----
 
