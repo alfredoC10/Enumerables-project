@@ -72,15 +72,11 @@ module Enumerable
 
     # Not there a block or an argument?
     elsif arg.empty?
-      my_each do |elmt|
-        counter += 1 if elmt != false && !elmt.nil?
-      end
+      my_each { |elmt| counter += 1 if elmt != false && !elmt.nil? }
 
     # My_all? will be used to find out if the collection is made of a specific object
     else
-      my_each do |elmt|
-        counter += 1 if elmt == arg[0]
-      end
+      my_each { |elmt| counter += 1 if elmt == arg[0] }
     end
     counter == to_a.length
   end
