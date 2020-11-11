@@ -109,9 +109,9 @@ module Enumerable
 end
 
 module Enumerable
-  # 4.- ---- my_all? Method ----
+  # 4.- ---- my_none? Method ----
 
-  def my_all?(arg = nil)
+  def my_none?(arg = nil)
     counter = 0
 
     #  Was a block given to the method?
