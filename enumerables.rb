@@ -52,13 +52,15 @@ module Enumerable
 
   def my_all?(*arg)
     counter = 0
-
+    #  Was a block given to the method?
     if block_given?
       my_each { |elmt| counter += 1 if yield(elmt) == true }
 
+    #  If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
     elsif arg[0].is_a? Class
       my_each { |elmt| counter += 1 if elmt.class == arg[0] or elmt.is_a? arg[0] }
 
+    # Do all of the elements match the regular expression?
     elsif arg[0].class == Regexp
       my_each do |elmt|
         if elmt.class != String
@@ -68,9 +70,11 @@ module Enumerable
         end
       end
 
+    # Not there a block or an argument?
     elsif arg.empty?
       my_each { |elmt| counter += 1 if elmt != false && !elmt.nil? }
 
+    # My_all? will be used to find out if the collection is made of a specific object
     else
       my_each { |elmt| counter += 1 if elmt == arg[0] }
     end
