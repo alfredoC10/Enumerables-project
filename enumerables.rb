@@ -41,7 +41,7 @@ module Enumerable
     else
       new_arr = []
       my_each do |elmt|
-        filtered_arr.push(elmt) if yield(elmt)
+        new_arr.push(elmt) if yield(elmt)
       end
       new_arr
     end
