@@ -54,39 +54,32 @@ module Enumerable
     counter = 0
     #  Was a block given to the method?
     if block_given?
-      my_each do |elmt|
-        counter += 1 if yield(elmt) == true
-      end
+      my_each { |elmt| counter += 1 if yield(elmt) == true }
 
     #  If there's no block, is the given argument the name of a data type like Integer, String, Array etc.?
     elsif arg[0].is_a? Class
+      my_each { |elmt| counter += 1 if elmt.class == arg[0] or elmt.is_a? arg[0] }
+
+    # Do all of the elements match the regular expression?
+    elsif arg[0].class == Regexp 
       my_each do |elmt|
-        counter += 1 if elmt.class == arg[0] or elmt.is_a? arg[0]
+        if elmt.class != String
+          false
+        elsif elmt.match?(arg[0])
+          counter += 1
+        end
       end
 
-    #  Is my_all? used to find if the collection is made of a specific thing?
-    elsif arg[0].is_a? Object
+    # Not there a block or an argument?
+    elsif arg.empty?
+      my_each do |elmt|
+        counter += 1 if elmt != false && !elmt.nil?
+      end
 
-      if arg[0].class == Regexp # Do all of the elements match the regular expression?
-        my_each do |elmt|
-          if elmt.class != String
-            false
-          elsif elmt.match?(arg[0])
-            counter += 1
-          end
-        end
-
-      # Not there a block or an argument?
-      elsif arg.empty?
-        my_each do |elmt|
-          counter += 1 if elmt != false && !elmt.nil?
-        end
-
-      # My_all? will be used to find out if the collection is made of a specific object
-      else
-        my_each do |elmt|
-          counter += 1 if elmt == arg[0]
-        end
+    # My_all? will be used to find out if the collection is made of a specific object
+    else
+      my_each do |elmt|
+        counter += 1 if elmt == arg[0]
       end
     end
     counter == to_a.length
@@ -272,7 +265,6 @@ module Enumerable
   # 10.- ---- Method created for testing my_inject method ----
 
   def multiply_els(array)
-
     array.my_inject(:*)
   end
 
@@ -297,6 +289,7 @@ module Enumerable
 
   def my_map_proc_block(*my_proc)
     return 'Only a proc must given as argument' if my_proc.size > 1
+
     new_arr = []
 
     if block_given? # Case 1: When the method takes a block
