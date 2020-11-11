@@ -1,4 +1,4 @@
-# rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/AbcSize, Lint/MissingCopEnableDirective
+# rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/AbcSize, Lint/MissingCopEnableDirective, Lint/RedundantCopDisableDirective
 module Enumerable
   # 1.- ---- my_each Method ----
 
@@ -63,7 +63,7 @@ module Enumerable
 
     # Do all of the elements match the regular expression?
     elsif arg.class == Regexp
-      arr_str = map (&:to_s)
+      arr_str = map { |i| i.to_s }
       arr_str.my_each { |elmt| counter += 1 if elmt.match?(arg) }
 
     # Not there a block or an argument?
@@ -94,7 +94,7 @@ module Enumerable
 
     # Does any of the elements match the regular expression?
     elsif arg.class == Regexp
-      arr_str = map (&:to_s)
+      arr_str = map { |i| i.to_s }
       arr_str.my_each { |elmt| counter += 1 if elmt.match?(arg) }
 
     # Not there a block or an argument?
@@ -125,7 +125,7 @@ module Enumerable
 
     # Do none of the elements match the regular expression?
     elsif arg.class == Regexp
-      arr_str = map (&:to_s)
+      arr_str = map { |i| i.to_s }
       arr_str.my_each { |elmt| counter += 1 if elmt.match?(arg) }
 
     # Not there a block or an argument?
