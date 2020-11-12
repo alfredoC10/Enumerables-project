@@ -186,14 +186,13 @@ module Enumerable
     end
   end
 
-
   # 9.- ---- my_inject Method ----
-
   def my_inject(*args)
     memo = to_a[0]
 
     # Case 1: arguments are given but not a block
     if !args.empty? && !block_given?
+
       # There are an initial value and a symbol which indicates the operation to perform
       if (args[0].is_a? Numeric or args[0].class == String) && args[1].class == Symbol
         memo = args[0]
@@ -210,7 +209,6 @@ module Enumerable
         elsif args[1] == :%
           my_each { |elmt| memo %= elmt }
         end
-
       elsif args.size == 1 && args[0].class == Symbol # There's only the operation's symbol
         if args[0] == :+
           self[1..-1].my_each { |elmt| memo += elmt }
@@ -225,20 +223,27 @@ module Enumerable
         elsif args[0] == :%
           self[1..-1].my_each { |elmt| memo %= elmt }
         end
-
       end
+      memo
 
       # Case 2: an initial value is given as an argument along with a block
     elsif (args[0].is_a? Numeric or args[0].class == String) && block_given?
       memo = args[0]
       my_each { |elmt| memo = yield(memo, elmt) }
+      memo
 
       # Case 3: only a block is given
     elsif args.empty? && block_given?
       self[1..-1].my_each { |elmt| memo = yield(memo, elmt) }
-    end
+      memo
 
-    memo
+    elsif args.empty? && !block_given?
+      def call_block
+        yield 42
+      end
+      call_block
+
+    end
   end
 
   # 10.- ---- Method created for testing my_inject method ----
