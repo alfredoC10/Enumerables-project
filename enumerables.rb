@@ -235,14 +235,12 @@ module Enumerable
 
       # Case 3: only a block is given
     elsif args.empty? && block_given?
-      self.to_a[1..-1].my_each { |elmt| memo = yield(memo, elmt) }
+      to_a[1..-1].my_each { |elmt| memo = yield(memo, elmt) }
       memo
 
     elsif args.empty? && !block_given?
-      def call_block
-        yield 42
-      end
-      call_block
+      call_block = lambda { yield 42 }
+      call_block.call
 
     end
   end
