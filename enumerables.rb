@@ -211,17 +211,17 @@ module Enumerable
         end
       elsif args.size == 1 && args[0].class == Symbol # There's only the operation's symbol
         if args[0] == :+
-          self[1..-1].my_each { |elmt| memo += elmt }
+          self.to_a[1..-1].my_each { |elmt| memo += elmt }
         elsif args[0] == :-
-          self[1..-1].my_each { |elmt| memo -= elmt }
+          self.to_a[1..-1].my_each { |elmt| memo -= elmt }
         elsif args[0] == :*
-          self[1..-1].my_each { |elmt| memo *= elmt }
+          self.to_a[1..-1].my_each { |elmt| memo *= elmt }
         elsif args[0] == :/
-          self[1..-1].my_each { |elmt| memo /= elmt }
+          self.to_a[1..-1].my_each { |elmt| memo /= elmt }
         elsif args[0] == :**
-          self[1..-1].my_each { |elmt| memo **= elmt }
+          self.to_a[1..-1].my_each { |elmt| memo **= elmt }
         elsif args[0] == :%
-          self[1..-1].my_each { |elmt| memo %= elmt }
+          self.to_a[1..-1].my_each { |elmt| memo %= elmt }
         end
       end
       memo
@@ -234,7 +234,7 @@ module Enumerable
 
       # Case 3: only a block is given
     elsif args.empty? && block_given?
-      self[1..-1].my_each { |elmt| memo = yield(memo, elmt) }
+      self.to_a[1..-1].my_each { |elmt| memo = yield(memo, elmt) }
       memo
 
     elsif args.empty? && !block_given?
