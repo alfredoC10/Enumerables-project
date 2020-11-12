@@ -239,7 +239,7 @@ module Enumerable
       memo
 
     elsif args.empty? && !block_given?
-      call_block = lambda { yield 42 }
+      call_block = -> { yield 42 }
       call_block.call
 
     end
