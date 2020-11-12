@@ -152,9 +152,10 @@ module Enumerable
   end
 
   # 8.- ---- my_map Method (modified to take a proc or block) ----
-  def my_map(*my_proc)
 
+  def my_map(*my_proc)
     return 'Only one proc must given as argument' if my_proc.size > 1
+
     new_arr = []
 
     if my_proc.empty? && block_given? # Case 1: When the method takes a block
@@ -211,17 +212,17 @@ module Enumerable
         end
       elsif args.size == 1 && args[0].class == Symbol # There's only the operation's symbol
         if args[0] == :+
-          self.to_a[1..-1].my_each { |elmt| memo += elmt }
+          to_a[1..-1].my_each { |elmt| memo += elmt }
         elsif args[0] == :-
-          self.to_a[1..-1].my_each { |elmt| memo -= elmt }
+          to_a[1..-1].my_each { |elmt| memo -= elmt }
         elsif args[0] == :*
-          self.to_a[1..-1].my_each { |elmt| memo *= elmt }
+          to_a[1..-1].my_each { |elmt| memo *= elmt }
         elsif args[0] == :/
-          self.to_a[1..-1].my_each { |elmt| memo /= elmt }
+          to_a[1..-1].my_each { |elmt| memo /= elmt }
         elsif args[0] == :**
-          self.to_a[1..-1].my_each { |elmt| memo **= elmt }
+          to_a[1..-1].my_each { |elmt| memo **= elmt }
         elsif args[0] == :%
-          self.to_a[1..-1].my_each { |elmt| memo %= elmt }
+          to_a[1..-1].my_each { |elmt| memo %= elmt }
         end
       end
       memo
