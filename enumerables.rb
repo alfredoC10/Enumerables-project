@@ -245,13 +245,7 @@ module Enumerable
     end
   end
 
-  # 10.- ---- Method created for testing my_inject method ----
-
-  def multiply_els(array)
-    array.my_inject(:*)
-  end
-
-  # 11.- ---- Modified my_map method that takes proc ----
+  # 10.- ---- Modified my_map method that takes proc ----
 
   def my_map_proc(&my_proc)
     new_arr = []
@@ -268,3 +262,8 @@ module Enumerable
     new_arr
   end
 end
+
+  # 11.- ---- Method created for testing my_inject method ----
+  def multiply_els(array)
+    array.my_inject(:*)
+  end
