@@ -263,7 +263,7 @@ module Enumerable
   end
 end
 
-  # 11.- ---- Method created for testing my_inject method ----
+# 11.- ---- Method created for testing my_inject method ----
 def multiply_els(array)
   array.my_inject(:*)
 end
