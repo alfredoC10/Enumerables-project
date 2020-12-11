@@ -65,7 +65,7 @@ describe Enumerable do
     end
 
     it "Is true if all the elements match the Regex and there's no block" do
-      expect((arr_rgx.my_all?(/'o'/))).to eql((arr_rgx.all?(/'o'/)))
+      expect(arr_rgx.my_all?(/'o'/)).to eql(arr_rgx.all?(/'o'/))
     end
 
     it 'Is true if none of the elements equals false or nil, when no block nor argument is given' do
