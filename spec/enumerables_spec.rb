@@ -72,18 +72,18 @@ describe Enumerable do
       expect(arr_rgx.my_all?).to be_truthy
     end
 
-    it "Is true if each of the elements is the same object given as argument" do
-      expect(arr_str.my_all? 'cat').not_to be_truthy
+    it 'Is true if each of the elements is the same object given as argument' do
+      expect(arr_str.my_all?('cat')).not_to be_truthy
     end
   end
 
   describe '#my_any?' do
     it 'Looks for any element in the collection to fulfill the condition given in a block' do
-      expect(rng.my_any? { |itm| 4 < itm && itm < 7 }).to eql(rng.any? { |itm| 4 < itm && itm < 7 })
+      expect(rng.my_any? { |itm| itm > 4 && itm < 7 }).to eql(rng.any? { |itm| itm > 4 && itm < 7 })
     end
 
     it 'Is true once an element matches the Regex given as argument' do
-      expect(arr_str.my_any? /h/).to be_truthy
+      expect(arr_str.my_any?(/h/)).to be_truthy
     end
 
     it 'Is true once an element is different from false or nil, when no argument nor block is given' do
@@ -93,11 +93,11 @@ describe Enumerable do
 
   describe '#my_none?' do
     it "Looks for none of a collection's elements to fulfill the condition given in a block" do
-      expect(rng.none? { |itm| 2 > itm }).to eql(rng.my_none? { |itm| 2 > itm })
+      expect(rng.none? { |itm| itm < 2 }).to eql(rng.my_none? { |itm| itm < 2 })
     end
 
     it 'Looks for none of the elements to match the Regex given as argument' do
-      expect(hsh.none? /h/).to be_truthy
+      expect(hsh.none?(/h/)).to be_truthy
     end
 
     it 'Looks for all the elements to be equal to false or nil, when no block nor argument is given' do
@@ -106,9 +106,9 @@ describe Enumerable do
     end
 
     it 'Looks for none of the elements to be same given object as argument' do
-      expect(arr_str.my_none? 'moose').to eql(arr_str.none? 'moose')
+      expect(arr_str.my_none?('moose')).to eql(arr_str.none?('moose'))
     end
-  end  
+  end
 
   describe '#my_count?' do
     it 'Returns the number of elements are in a collection when is no block given nor argument' do
@@ -131,29 +131,29 @@ describe Enumerable do
     end
 
     it 'Modifys the elements of an array according to the proc given and returns an array with these new values' do
-      myproc = Proc.new { |itm| itm * 3}
+      myproc = proc { |itm| itm * 3 }
       expect(arr_int.my_map(myproc)).to eql([3, 6, 9, 12, 15])
     end
 
     it 'Creates an enumererator if no block and no proc is given' do
-      expect(hsh.my_map.is_a? Enumerator).to eql(true)
+      expect(hsh.my_map.is_a?(Enumerator)).to eql(true)
     end
   end
 
   describe '#my_inject' do
-    it 'Merges all the items of a collection in an arithmetic operation result, using an initial value and a symbol as given arguments' do
+    it 'Merges the collection items in an operation result, using an initial value and a symbol as given arguments' do
       expect(rng.my_inject(2, :+)).to eql(rng.inject(2, :+))
     end
 
-    it 'Merges all the items of a collection in an arithmetic operation result, using only a symbol as given argument' do
+    it 'Merges the collection items in an operation result, using only a symbol as given argument' do
       expect(arr_int.my_inject(:*)).to eql(arr_int.inject(:*))
     end
 
-    it 'Merges all the items of a collection in an operation result, using an initial value as argument and passing a block' do
-      expect(arr_int.my_inject(11) { |memo, num| memo + (2 * num) }).to eql(arr_int.inject(11) { |memo, num| memo + (2 * num) })
+    it 'Merges the collection items in an operation result, using an initial value as argument and passing a block' do
+      expect(rng.my_inject(11) { |m, n| m * n }).to eql(rng.inject(11) { |m, n| m * n })
     end
 
-    it 'Merges all the items of a collection in an operation result, passing only a block' do
+    it 'Merges the collection items in an operation result, passing only a block' do
       expect(arr_int.my_inject { |memo, num| memo + 1 + num }).to eql(arr_int.inject { |memo, num| memo + 1 + num })
     end
   end
