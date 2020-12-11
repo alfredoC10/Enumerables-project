@@ -1,4 +1,4 @@
-require './enumerables'
+require_relative './enumerables'
 
 describe Enumerable do
   let(:arr_str) { %w[lion ant bear cat fish] }
