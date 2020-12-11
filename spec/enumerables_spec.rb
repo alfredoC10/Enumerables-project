@@ -10,7 +10,7 @@ describe Enumerable do
 
   describe '#my_each' do
     it 'Returns the same input array' do
-      expect(arr_str.my_each { |i| "#{i}" + "hi" }).to eql(arr_str)
+      expect(arr_int.my_each { |i| i * 253 }).to eql(arr_int)
     end
 
     it 'Creates an enumererator if no block is given' do
@@ -21,9 +21,6 @@ describe Enumerable do
       nw = []
       arr_int.my_each { |x| nw.push(x + 2) }
       expect(nw).to eql([3, 4, 5, 6, 7])
-      empt = []
-      arr_str.my_each { |i| empt.push("#{i}" + "-hi") }
-      expect(empt).to eql(%w[lion-hi ant-hi bear-hi cat-hi fish-hi])
     end
   end
 

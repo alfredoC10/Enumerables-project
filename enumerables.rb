@@ -250,11 +250,11 @@ module Enumerable
   def my_map_proc(&my_proc)
     new_arr = []
 
-    if self.instance_of?(Array) or self.instance_of?(Range)
+    if instance_of?(Array) or instance_of?(Range)
       my_each do |i|
         new_arr.push(my_proc.call(i))
       end
-    elsif self.instance_of?(Hash)
+    elsif instance_of?(Hash)
       my_each do |key, value|
         new_arr.push(my_proc.call(key, value))
       end
