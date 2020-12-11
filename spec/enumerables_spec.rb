@@ -6,7 +6,7 @@ describe Enumerable do
   let(:arr_dtyp) { [Integer, String, Numeric, Float] }
   let(:arr_rgx) { %w[door box mouse transformer board] }
   let(:rng) { (3..10) }
-  let(:hsh) { {one: 30, two: 17} }
+  let(:hsh) { { one: 30, two: 17 } }
 
   describe '#my_each' do
     it 'Returns the same input array' do
@@ -14,7 +14,7 @@ describe Enumerable do
     end
 
     it 'Creates an enumererator if no block is given' do
-      expect(arr_str.my_each.is_a? Enumerator).to eql(true)
+      expect((arr_str.my_each.is_a? Enumerator)).to eql(true)
     end
 
     it "Performs the specified operation in the given block with each of an array's items" do
