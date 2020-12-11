@@ -47,7 +47,7 @@ describe Enumerable do
     end
 
     it 'Returns a new array only with those elements that meet the condition' do
-      expect(rng.my_select { |itm| itm % 2 != 0 }).to eql([3, 5, 7, 9])
+      expect(rng.my_select { |itm| itm.odd? }).to eql([3, 5, 7, 9])
     end
 
     it 'Returns an array with the selected elements even when they are strings' do
@@ -65,7 +65,7 @@ describe Enumerable do
     end
 
     it "Is true if all the elements match the Regex and there's no block" do
-      expect((arr_rgx.my_all? (/o/))).to eql((arr_rgx.all? (/o/)))
+      expect((arr_rgx.my_all?/o/)).to eql((arr_rgx.all?/o/))
     end
 
     it 'Is true if none of the elements equals false or nil, when no block nor argument is given' do
