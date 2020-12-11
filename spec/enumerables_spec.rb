@@ -28,7 +28,7 @@ describe Enumerable do
   end
 
   describe '#my_each_with_index' do
-    it 'Returns an array and it index'do
+    it 'Returns an array and it index' do
       expect(arr_int.my_each_with_index { |val, idx| }).to eql(arr_int.each_with_index { |val, idx| })
     end
 
@@ -43,15 +43,15 @@ describe Enumerable do
 
   describe '#my_select' do
     it 'Creates an enumererator if no block is given' do
-      expect(arr_str.my_select.is_a? Enumerator).to eql(true)
+      expect((arr_str.my_select.is_a? Enumerator)).to eql(true)
     end
 
     it 'Returns a new array only with those elements that meet the condition' do
-      expect(rng.my_select { |itm| itm.odd? }).to eql([3, 5, 7, 9])
+      expect(rng.my_select { |itm| itm % 2 != 0 }).to eql([3, 5, 7, 9])
     end
 
     it 'Returns an array with the selected elements even when they are strings' do
-      expect(arr_str.my_select { |itm| itm == 'ant' || itm == 'fish' }).to eql(arr_str.select { |itm| itm == 'ant' || itm == 'fish' })
+      expect(arr_str.my_select { |itm| itm == 'fish' }).to eql(['fish'])
     end
   end
 
@@ -61,11 +61,11 @@ describe Enumerable do
     end
 
     it 'Is true if all the elements are names of datatypes and no block is given' do
-      expect(arr_dtyp.my_all? Class).to eql(arr_dtyp.all? Class)
+      expect((arr_dtyp.my_all? Class)).to eql((arr_dtyp.all? Class))
     end
 
     it "Is true if all the elements match the Regex and there's no block" do
-      expect(arr_rgx.my_all? /o/).to eql(arr_rgx.all? /o/)
+      expect((arr_rgx.my_all? (/o/))).to eql((arr_rgx.all? (/o/)))
     end
 
     it 'Is true if none of the elements equals false or nil, when no block nor argument is given' do
