@@ -228,7 +228,7 @@ module Enumerable
       memo
 
       # Case 2: an initial value is given as an argument along with a block
-    elsif (args[0].is_a? Numeric or args[0].class == String) && block_given?
+    elsif (args[0].is_a? Numeric or args[0].instance_of?(String)) && block_given?
       memo = args[0]
       my_each { |elmt| memo = yield(memo, elmt) }
       memo
@@ -250,11 +250,11 @@ module Enumerable
   def my_map_proc(&my_proc)
     new_arr = []
 
-    if self.class == Array or self.class == Range
+    if instance_of?(Array) or instance_of?(Range)
       my_each do |i|
         new_arr.push(my_proc.call(i))
       end
-    elsif self.class == Hash
+    elsif instance_of?(Hash)
       my_each do |key, value|
         new_arr.push(my_proc.call(key, value))
       end
